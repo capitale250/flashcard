@@ -4,7 +4,7 @@
  */
 
 
-import type { Context } from "./api/context"
+import type { Context } from "./src/context"
 
 
 
@@ -14,9 +14,6 @@ declare global {
 }
 
 export interface NexusGenInputs {
-  RoleInputType: { // input type
-    name?: string | null; // String
-  }
 }
 
 export interface NexusGenEnums {
@@ -31,24 +28,22 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
-  Company: { // root type
-    bio?: string | null; // String
-    contactPerson?: string | null; // String
-    email?: string | null; // String
+  AuthPayload: { // root type
+    token: string; // String!
+    user: NexusGenRootTypes['User']; // User!
+  }
+  Flashcard: { // root type
+    answer: string; // String!
     id: number; // Int!
-    name?: string | null; // String
-    roleId?: number | null; // Int
-    website?: string | null; // String
+    question: string; // String!
+    title: string; // String!
   }
   Mutation: {};
   Query: {};
-  Role: { // root type
+  User: { // root type
+    email: string; // String!
     id: number; // Int!
-    name?: string | null; // String
-  }
-  Skill: { // root type
-    id: number; // Int!
-    name?: string | null; // String
+    names: string; // String!
   }
 }
 
@@ -63,114 +58,78 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
-  Company: { // field return type
-    bio: string | null; // String
-    contactPerson: string | null; // String
-    email: string | null; // String
+  AuthPayload: { // field return type
+    token: string; // String!
+    user: NexusGenRootTypes['User']; // User!
+  }
+  Flashcard: { // field return type
+    answer: string; // String!
+    createdBy: NexusGenRootTypes['User'] | null; // User
     id: number; // Int!
-    name: string | null; // String
-    roleId: number | null; // Int
-    roles: NexusGenRootTypes['Role'][]; // [Role!]!
-    website: string | null; // String
+    question: string; // String!
+    title: string; // String!
   }
   Mutation: { // field return type
-    createCompany: NexusGenRootTypes['Company']; // Company!
-    createRole: NexusGenRootTypes['Role']; // Role!
-    deleteCompany: NexusGenRootTypes['Company'] | null; // Company
-    updateCompany: NexusGenRootTypes['Company'] | null; // Company
+    create: NexusGenRootTypes['Flashcard']; // Flashcard!
+    login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
+    signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
   }
   Query: { // field return type
-    companies: Array<NexusGenRootTypes['Company'] | null> | null; // [Company]
-    company: NexusGenRootTypes['Company'] | null; // Company
-    roles: Array<NexusGenRootTypes['Role'] | null> | null; // [Role]
+    flashcards: NexusGenRootTypes['Flashcard'][]; // [Flashcard!]!
+    users: NexusGenRootTypes['User'][]; // [User!]!
   }
-  Role: { // field return type
-    company: NexusGenRootTypes['Company'] | null; // Company
+  User: { // field return type
+    email: string; // String!
+    flashcards: NexusGenRootTypes['Flashcard'][]; // [Flashcard!]!
     id: number; // Int!
-    name: string | null; // String
-    skills: Array<NexusGenRootTypes['Skill'] | null> | null; // [Skill]
-  }
-  Skill: { // field return type
-    id: number; // Int!
-    name: string | null; // String
-    role: NexusGenRootTypes['Role'] | null; // Role
+    names: string; // String!
   }
 }
 
 export interface NexusGenFieldTypeNames {
-  Company: { // field return type name
-    bio: 'String'
-    contactPerson: 'String'
-    email: 'String'
+  AuthPayload: { // field return type name
+    token: 'String'
+    user: 'User'
+  }
+  Flashcard: { // field return type name
+    answer: 'String'
+    createdBy: 'User'
     id: 'Int'
-    name: 'String'
-    roleId: 'Int'
-    roles: 'Role'
-    website: 'String'
+    question: 'String'
+    title: 'String'
   }
   Mutation: { // field return type name
-    createCompany: 'Company'
-    createRole: 'Role'
-    deleteCompany: 'Company'
-    updateCompany: 'Company'
+    create: 'Flashcard'
+    login: 'AuthPayload'
+    signup: 'AuthPayload'
   }
   Query: { // field return type name
-    companies: 'Company'
-    company: 'Company'
-    roles: 'Role'
+    flashcards: 'Flashcard'
+    users: 'User'
   }
-  Role: { // field return type name
-    company: 'Company'
+  User: { // field return type name
+    email: 'String'
+    flashcards: 'Flashcard'
     id: 'Int'
-    name: 'String'
-    skills: 'Skill'
-  }
-  Skill: { // field return type name
-    id: 'Int'
-    name: 'String'
-    role: 'Role'
+    names: 'String'
   }
 }
 
 export interface NexusGenArgTypes {
   Mutation: {
-    createCompany: { // args
-      bio: string; // String!
-      contactPerson: string; // String!
+    create: { // args
+      answer: string; // String!
+      question: string; // String!
+      title: string; // String!
+    }
+    login: { // args
       email: string; // String!
-      id?: number | null; // Int
-      name: string; // String!
-      roleId?: number | null; // Int
-      roles?: Array<NexusGenInputs['RoleInputType'] | null> | null; // [RoleInputType]
-      website: string; // String!
+      password: string; // String!
     }
-    createRole: { // args
-      bio: string; // String!
-      contactPerson: string; // String!
+    signup: { // args
       email: string; // String!
-      id?: number | null; // Int
-      name: string; // String!
-      roleId?: number | null; // Int
-      roles?: Array<NexusGenInputs['RoleInputType'] | null> | null; // [RoleInputType]
-      website: string; // String!
-    }
-    deleteCompany: { // args
-      id: number; // Int!
-    }
-    updateCompany: { // args
-      bio?: string | null; // String
-      contactPerson?: string | null; // String
-      email?: string | null; // String
-      id: number; // Int!
-      name?: string | null; // String
-      roleId?: number | null; // Int
-      roles?: Array<NexusGenInputs['RoleInputType'] | null> | null; // [RoleInputType]
-      website?: string | null; // String
-    }
-  }
-  Query: {
-    company: { // args
-      id: number; // Int!
+      names: string; // String!
+      password: string; // String!
     }
   }
 }
@@ -183,7 +142,7 @@ export interface NexusGenTypeInterfaces {
 
 export type NexusGenObjectNames = keyof NexusGenObjects;
 
-export type NexusGenInputNames = keyof NexusGenInputs;
+export type NexusGenInputNames = never;
 
 export type NexusGenEnumNames = never;
 

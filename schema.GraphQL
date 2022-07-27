@@ -2,43 +2,33 @@
 ### Do not make changes to this file directly
 
 
-type Company {
-  bio: String
-  contactPerson: String
-  email: String
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+type Flashcard {
+  answer: String!
+  createdBy: User
   id: Int!
-  name: String
-  roleId: Int
-  roles: [Role!]!
-  website: String
+  question: String!
+  title: String!
 }
 
 type Mutation {
-  createCompany(bio: String!, contactPerson: String!, email: String!, id: Int, name: String!, roleId: Int, roles: [RoleInputType], website: String!): Company!
-  createRole(bio: String!, contactPerson: String!, email: String!, id: Int, name: String!, roleId: Int, roles: [RoleInputType], website: String!): Role!
-  deleteCompany(id: Int!): Company
-  updateCompany(bio: String, contactPerson: String, email: String, id: Int!, name: String, roleId: Int, roles: [RoleInputType], website: String): Company
+  create(answer: String!, question: String!, title: String!): Flashcard!
+  login(email: String!, password: String!): AuthPayload!
+  signup(email: String!, names: String!, password: String!): AuthPayload!
 }
 
 type Query {
-  companies: [Company]
-  company(id: Int!): Company
-  roles: [Role]
+  flashcards: [Flashcard!]!
+  users: [User!]!
 }
 
-type Role {
-  company: Company
+type User {
+  email: String!
+  flashcards: [Flashcard!]!
   id: Int!
-  name: String
-  skills: [Skill]
-}
-
-input RoleInputType {
-  name: String
-}
-
-type Skill {
-  id: Int!
-  name: String
-  role: Role
+  names: String!
 }
